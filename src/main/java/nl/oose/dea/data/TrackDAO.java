@@ -23,13 +23,13 @@ public class TrackDAO {
             ResultSet rs = statement.executeQuery();
             List<Track> tracks = new ArrayList<>();
             while (rs.next()) {
-                Track track = new Track(rs.getInt(1),
+                Track track = new Track(rs.getLong(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getInt(4),
                         rs.getString(5),
                         rs.getInt(6),
-                        rs.getDate(7),
+                        rs.getString(7),
                         rs.getString(8),
                         rs.getBoolean(9));
                 tracks.add(track);
@@ -41,22 +41,49 @@ public class TrackDAO {
         return null;
     }
 
-    public List<Track> findAllTracks(int id) {
+    public List<Track> findAllTracksNotInPlaylist(int id) {
         try {
             Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
             Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
-            var statement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT trackid FROM playlisttracks WHERE playistid != ?)");
+            var statement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT trackid FROM playlisttracks WHERE playlistid != ?)");
             statement.setString(1, String.valueOf(id));
             ResultSet rs = statement.executeQuery();
             List<Track> tracks = new ArrayList<>();
             while (rs.next()) {
-                Track track = new Track(rs.getInt(1),
+                Track track = new Track(rs.getLong(1),
                         rs.getString(2),
                         rs.getString(3),
                         rs.getInt(4),
                         rs.getString(5),
                         rs.getInt(6),
-                        rs.getDate(7),
+                        rs.getString(7),
+                        rs.getString(8),
+                        rs.getBoolean(9));
+                tracks.add(track);
+            }
+            return tracks;
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return null;
+    }
+
+    public List<Track> findAllTracksInPlaylist(int id) {
+        try {
+            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
+            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+            var statement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT trackid FROM playlisttracks WHERE playlistid = ?)");
+            statement.setString(1, String.valueOf(id));
+            ResultSet rs = statement.executeQuery();
+            List<Track> tracks = new ArrayList<>();
+            while (rs.next()) {
+                Track track = new Track(rs.getLong(1),
+                        rs.getString(2),
+                        rs.getString(3),
+                        rs.getInt(4),
+                        rs.getString(5),
+                        rs.getInt(6),
+                        rs.getString(7),
                         rs.getString(8),
                         rs.getBoolean(9));
                 tracks.add(track);

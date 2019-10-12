@@ -1,19 +1,16 @@
 package nl.oose.dea.domain;
 
-import java.util.Date;
-
-public class Track {
-    private int id;
+public class Track extends DomainObject {
     private String title;
     private String performer;
     private int duration;
     private String album;
     private int playcount;
-    private Date publicationDate;
+    private String publicationDate;
     private String description;
     private boolean offlineAvailable;
 
-    public Track(int id, String title, String performer, int duration, String album, int playcount, Date publicationDate, String description, boolean offlineAvailable) {
+    public Track(Long id, String title, String performer, int duration, String album, int playcount, String publicationDate, String description, boolean offlineAvailable) {
         this.id = id;
         this.title = title;
         this.performer = performer;
@@ -25,11 +22,11 @@ public class Track {
         this.offlineAvailable = offlineAvailable;
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -73,11 +70,11 @@ public class Track {
         this.playcount = playcount;
     }
 
-    public Date getPublicationDate() {
+    public String getPublicationDate() {
         return publicationDate;
     }
 
-    public void setPublicationDate(Date publicationDate) {
+    public void setPublicationDate(String publicationDate) {
         this.publicationDate = publicationDate;
     }
 

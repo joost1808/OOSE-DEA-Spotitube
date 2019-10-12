@@ -3,12 +3,9 @@ package nl.oose.dea.domain.services;
 import nl.oose.dea.data.PlaylistDAO;
 import nl.oose.dea.domain.Playlist;
 import nl.oose.dea.domain.exceptions.IdAlreadyInUseException;
-import nl.oose.dea.domain.exceptions.ItemNotAvailableException;
 import nl.oose.dea.rest.dto.PlaylistsDTO;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class PlaylistService {
     private PlaylistDAO playlistDAO = new PlaylistDAO();
@@ -16,16 +13,19 @@ public class PlaylistService {
 
     public PlaylistsDTO getAll(String token) {
         playlists = playlistDAO.getAllPlaylists(token);
-        return new PlaylistsDTO(playlists, 0);
+        return new PlaylistsDTO(playlists, calcTotalPlaylistsLength(playlists));
     }
 
-    public void deletePlaylist(int id) {
-        Optional<Playlist> itemForName = playlists.stream().filter(playlist -> playlist.getId() == id).findFirst();
-        List<Playlist> filteredItems = playlists.stream().filter(playlist -> playlist.getId() != id).collect(Collectors.toList());
-        if (filteredItems.size() == playlists.size()) {
-            throw new ItemNotAvailableException();
+    private int calcTotalPlaylistsLength(List<Playlist> playlists) {
+        int totalLength = 0;
+        for (Playlist playlist : playlists) {
+            totalLength += playlist.getLength();
         }
-        playlists = filteredItems;
+        return totalLength;
+    }
+
+    public void deletePlaylist(int id, String token) {
+        playlistDAO.deletePlaylist(id, token);
     }
 
     public void addPlaylist(Playlist playlist) {
@@ -36,7 +36,7 @@ public class PlaylistService {
         playlists.add(playlist);
     }
 
-    public void editPlaylist(int id) {
-
+    public void editPlaylist(String newName, int id) {
+        playlistDAO.editPlaylist(newName, id);
     }
 }

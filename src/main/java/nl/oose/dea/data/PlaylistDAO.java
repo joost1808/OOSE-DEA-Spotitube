@@ -23,7 +23,7 @@ public class PlaylistDAO {
             ResultSet rs = statement.executeQuery();
             List<Playlist> playlists = new ArrayList<>();
             while (rs.next()) {
-                Playlist playlist = new Playlist(rs.getInt(1), rs.getString(2), rs.getBoolean(3), new ArrayList<>());
+                Playlist playlist = new Playlist(rs.getInt(1), rs.getString(2), rs.getBoolean(3), new ArrayList<>(), rs.getInt(4));
                 playlists.add(playlist);
             }
             return playlists;
@@ -33,22 +33,29 @@ public class PlaylistDAO {
         return null;
     }
 
-    public int getPlaylistLength(int playlistId) {
+    public void deletePlaylist(int id, String token) {
         try {
             Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
             Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
-            var statement = connection.prepareStatement("SELECT duration FROM tracks WHERE id IN (SELECT trackid FROM playlisttracks WHERE playlistid = ?)");
-            statement.setInt(1, playlistId);
-            ResultSet rs = statement.executeQuery();
-            int length = 0;
-            while(rs.next()) {
-                length += rs.getInt(1);
-            }
-            return length;
+            var statement = connection.prepareStatement("DELETE FROM userplaylists WHERE userplaylists.usertoken = ? AND playlistid = ?");
+            statement.setString(1, token);
+            statement.setString(2, String.valueOf(id));
+            statement.executeUpdate();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
         }
-        return 0;
     }
 
+    public void editPlaylist(String name, int id) {
+        try {
+            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
+            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+            var statement = connection.prepareStatement("UPDATE playlists SET name = ? WHERE id = ?");
+            statement.setString(1, name);
+            statement.setString(1, String.valueOf(id));
+            statement.executeUpdate();
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error(e.getMessage());
+        }
+    }
 }

@@ -7,12 +7,14 @@ public class Playlist {
     private String name;
     private boolean owner;
     private List<Track> tracks;
+    private int length;
 
-    public Playlist(int id, String name, boolean owner, List<Track> tracks) {
+    public Playlist(int id, String name, boolean owner, List<Track> tracks, int length) {
         this.id = id;
         this.name = name;
         this.owner = owner;
         this.tracks = tracks;
+        this.length = length;
     }
 
     public int getId() {
@@ -47,4 +49,11 @@ public class Playlist {
         this.tracks = tracks;
     }
 
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
 }
