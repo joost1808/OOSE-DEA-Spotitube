@@ -9,10 +9,9 @@ import java.util.List;
 
 public class PlaylistService {
     private PlaylistDAO playlistDAO = new PlaylistDAO();
-    private List<Playlist> playlists;
 
     public PlaylistsDTO getAll(String token) {
-        playlists = playlistDAO.getAllPlaylists(token);
+        List<Playlist> playlists = playlistDAO.getAllPlaylists(token);
         return new PlaylistsDTO(playlists, calcTotalPlaylistsLength(playlists));
     }
 
@@ -28,12 +27,8 @@ public class PlaylistService {
         playlistDAO.deletePlaylist(id, token);
     }
 
-    public void addPlaylist(Playlist playlist) {
-        if (playlists.stream().anyMatch(pl -> pl.getId() == playlist.getId())) {
-            throw new IdAlreadyInUseException();
-        }
-
-        playlists.add(playlist);
+    public void addPlaylist(int playlistid, String token) {
+        playlistDAO.addPlaylist(playlistid, token);
     }
 
     public void editPlaylist(String newName, int id) {

@@ -9,4 +9,12 @@ public class UserService {
     public TokenDTO getToken(String user) {
         return userDAO.getToken(user);
     }
+
+    public void setToken(String user) {
+        userDAO.setToken(user);
+    }
+
+    public boolean userVerify(String user, String password) {
+        return userDAO.verifyUser(user, password);
+    }
 }

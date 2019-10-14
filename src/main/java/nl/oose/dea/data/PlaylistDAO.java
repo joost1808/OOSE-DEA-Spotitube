@@ -33,26 +33,39 @@ public class PlaylistDAO {
         return null;
     }
 
-    public void deletePlaylist(int id, String token) {
+    public void addPlaylist(int playlistid, String token) {
         try {
             Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
             Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
-            var statement = connection.prepareStatement("DELETE FROM userplaylists WHERE userplaylists.usertoken = ? AND playlistid = ?");
+            var statement = connection.prepareStatement("INSERT INTO userplaylists VALUES (?, ?)");
             statement.setString(1, token);
-            statement.setString(2, String.valueOf(id));
+            statement.setString(2, String.valueOf(playlistid));
             statement.executeUpdate();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
         }
     }
 
-    public void editPlaylist(String name, int id) {
+    public void deletePlaylist(int playlistid, String token) {
+        try {
+            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
+            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+            var statement = connection.prepareStatement("DELETE FROM userplaylists WHERE userplaylists.usertoken = ? AND playlistid = ?");
+            statement.setString(1, token);
+            statement.setString(2, String.valueOf(playlistid));
+            statement.executeUpdate();
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error(e.getMessage());
+        }
+    }
+
+    public void editPlaylist(String name, int playlistid) {
         try {
             Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
             Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
             var statement = connection.prepareStatement("UPDATE playlists SET name = ? WHERE id = ?");
             statement.setString(1, name);
-            statement.setString(1, String.valueOf(id));
+            statement.setString(1, String.valueOf(playlistid));
             statement.executeUpdate();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());

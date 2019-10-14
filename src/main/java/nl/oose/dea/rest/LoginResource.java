@@ -22,7 +22,12 @@ public class LoginResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(UserDTO userDTO) {
-        TokenDTO tokenDTO = userService.getToken(userDTO.getUser());
-        return Response.ok().entity(tokenDTO).build();
+        if(userService.userVerify(userDTO.getUser(), userDTO.getPassword())) {
+            userService.setToken(userDTO.getUser());
+            TokenDTO tokenDTO = userService.getToken(userDTO.getUser());
+            return Response.ok().entity(tokenDTO).build();
+        } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+        }
     }
 }
