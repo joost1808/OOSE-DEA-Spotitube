@@ -85,8 +85,8 @@ public class TrackDAO {
         try {
             Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
             Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
-            var statement1 = connection.prepareStatement("UPDATE tracks SET offlineAvailable = ? WHERE trackid = ?");
-            statement1.setString(1, String.valueOf(offlineAvailable));
+            var statement1 = connection.prepareStatement("UPDATE tracks SET offlineAvailable = ? WHERE id = ?");
+            statement1.setBoolean(1, offlineAvailable);
             statement1.setString(2, String.valueOf(trackid));
             statement1.executeUpdate();
             var statement2 = connection.prepareStatement("INSERT INTO playlisttracks VALUES (?, ?)");

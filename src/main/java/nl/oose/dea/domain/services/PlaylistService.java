@@ -27,8 +27,8 @@ public class PlaylistService {
         playlistDAO.deletePlaylist(id, token);
     }
 
-    public void addPlaylist(int playlistid, String token) {
-        playlistDAO.addPlaylist(playlistid, token);
+    public void addPlaylist(String playlistName, boolean isOwner, String token) {
+        playlistDAO.addPlaylist(playlistName, isOwner, token);
     }
 
     public void editPlaylist(String newName, int id) {
