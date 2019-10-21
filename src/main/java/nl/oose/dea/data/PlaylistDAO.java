@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -13,18 +12,17 @@ import java.util.List;
 
 public class PlaylistDAO {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final ConnectionFactory connectionFactory = new ConnectionFactory();
 
     public List<Playlist> getAllPlaylists(String token) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("SELECT id, name, length, owner FROM playlists INNER JOIN userplaylists ON playlists.id = userplaylists.playlistid WHERE userplaylists.usertoken = ?");
             statement.setString(1, token);
             ResultSet rs = statement.executeQuery();
             List<Playlist> playlists = new ArrayList<>();
             while (rs.next()) {
-                Playlist playlist = new Playlist(rs.getInt(1), rs.getString(2), rs.getBoolean(4), new ArrayList<>(), rs.getInt(3));
-                playlists.add(playlist);
+                    Playlist playlist = new Playlist(rs.getInt(1), rs.getString(2), rs.getBoolean(4), new ArrayList<>(), rs.getInt(3));
+                    playlists.add(playlist);
             }
             return playlists;
         } catch (ClassNotFoundException | SQLException e) {
@@ -34,9 +32,7 @@ public class PlaylistDAO {
     }
 
     public void addPlaylist(String playlistName, String token) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             if (!checkIfPlaylistExists(playlistName)) {
                 var playlistsStatement = connection.prepareStatement("INSERT INTO playlists VALUES (NULL, ?, NULL)");
                 playlistsStatement.setString(1, playlistName);
@@ -53,9 +49,7 @@ public class PlaylistDAO {
     }
 
     private Long getPlaylistId(String playlistName) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("SELECT id FROM playlists WHERE name = ?");
             statement.setString(1, playlistName);
             ResultSet rs = statement.executeQuery();
@@ -71,9 +65,7 @@ public class PlaylistDAO {
     }
 
     private boolean checkIfPlaylistExists(String playlistName) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("SELECT name FROM playlists");
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
@@ -88,9 +80,7 @@ public class PlaylistDAO {
     }
 
     public void deletePlaylist(int playlistid, String token) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("DELETE FROM userplaylists WHERE userplaylists.usertoken = ? AND playlistid = ?");
             statement.setString(1, token);
             statement.setString(2, String.valueOf(playlistid));
@@ -101,9 +91,7 @@ public class PlaylistDAO {
     }
 
     public void editPlaylist(String name, int playlistid) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("UPDATE playlists SET name = ? WHERE id = ?");
             statement.setString(1, name);
             statement.setString(1, String.valueOf(playlistid));

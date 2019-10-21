@@ -13,12 +13,18 @@ import javax.ws.rs.core.Response;
 
 @Path("/playlists")
 public class PlaylistResource {
+    private PlaylistService playlistService;
+    private TrackService trackService;
 
     @Inject
-    PlaylistService playlistService;
+    public void setPlaylistService(PlaylistService playlistService) {
+        this.playlistService = playlistService;
+    }
 
     @Inject
-    TrackService trackService;
+    public void setTrackService(TrackService trackService) {
+        this.trackService = trackService;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

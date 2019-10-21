@@ -14,9 +14,12 @@ import javax.ws.rs.core.Response;
 
 @Path("/login")
 public class LoginResource {
+    private UserService userService;
 
     @Inject
-    UserService userService;
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

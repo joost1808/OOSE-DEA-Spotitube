@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
@@ -13,11 +12,10 @@ import java.util.UUID;
 public class UserDAO {
     private static final UUID uuid = UUID.randomUUID();
     final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final ConnectionFactory connectionFactory = new ConnectionFactory();
 
     public TokenDTO getToken(String user) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("SELECT name, token FROM users WHERE username = ?;");
             statement.setString(1, user);
             ResultSet rs = statement.executeQuery();
@@ -33,9 +31,7 @@ public class UserDAO {
     }
 
     public void setToken(String user) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("UPDATE users SET token = ? WHERE username = ?");
             statement.setString(1, String.valueOf(uuid));
             statement.setString(2, user);
@@ -46,9 +42,7 @@ public class UserDAO {
     }
 
     public boolean verifyUser(String user, String password) {
-        try {
-            Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
-            Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
+        try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("SELECT password FROM users WHERE username = ?");
             statement.setString(1, user);
             ResultSet rs = statement.executeQuery();
