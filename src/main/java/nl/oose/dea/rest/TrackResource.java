@@ -16,6 +16,10 @@ public class TrackResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksNotInPlaylist(@QueryParam("forPlaylist") int id, @QueryParam("token") String token) {
-        return Response.status(Response.Status.OK).entity(trackService.getAllNotInPlaylist(id)).build();
+        if (token != null) {
+            return Response.status(Response.Status.OK).entity(trackService.getAllNotInPlaylist(id)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 }

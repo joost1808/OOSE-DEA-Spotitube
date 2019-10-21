@@ -1,7 +1,6 @@
 package nl.oose.dea.rest;
 
 import nl.oose.dea.domain.Playlist;
-import nl.oose.dea.domain.Track;
 import nl.oose.dea.domain.services.PlaylistService;
 import nl.oose.dea.domain.services.TrackService;
 import nl.oose.dea.rest.dto.PlaylistDTO;
@@ -24,7 +23,11 @@ public class PlaylistResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylists(@QueryParam("token") String token) {
-        return Response.status(Response.Status.OK).entity(playlistService.getAll(token)).build();
+        if (token != null) {
+            return Response.status(Response.Status.OK).entity(playlistService.getAll(token)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @Path("/{id}")
@@ -39,8 +42,12 @@ public class PlaylistResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
-        playlistService.addPlaylist(playlistDTO.getName(), playlistDTO.isOwner(), token);
-        return Response.status(Response.Status.CREATED).entity(playlistService.getAll(token)).build();
+        if (token != null) {
+            playlistService.addPlaylist(playlistDTO.getName(), token);
+            return Response.status(Response.Status.CREATED).entity(playlistService.getAll(token)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @Path("/{id}")
@@ -48,31 +55,50 @@ public class PlaylistResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editPlaylist(Playlist playlist, @PathParam("id") int playlistid, @QueryParam("token") String token) {
-        playlistService.editPlaylist(playlist.getName(), playlistid);
-        return Response.status(Response.Status.OK).entity(playlistService.getAll(token)).build();
+        if (token != null) {
+            playlistService.editPlaylist(playlist.getName(), playlistid);
+            return Response.status(Response.Status.OK).entity(playlistService.getAll(token)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
+    //Kan deze in trackResource? reden: url werkte niet of functie werd niet aangeroepen
     @Path("/{id}/tracks")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksInPlaylist(@PathParam("id") int playlistid, @QueryParam("token") String token) {
-        return Response.status(Response.Status.OK).entity(trackService.getAllInPlaylist(playlistid)).build();
+        if (token != null) {
+            return Response.status(Response.Status.OK).entity(trackService.getAllInPlaylist(playlistid)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
+    //Kan deze in trackResource? reden: url werkte niet of functie werd niet aangeroepen
     @Path("/{playlistid}/tracks/{trackid}")
     @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     public Response removeTrackFromPlaylist(@PathParam("playlistid") int playlistid, @PathParam("trackid") int trackid, @QueryParam("token") String token) {
-        trackService.removeTrackFromPlaylist(playlistid, trackid);
-        return Response.status(Response.Status.OK).entity(trackService.getAllInPlaylist(playlistid)).build();
+        if (token != null) {
+            trackService.removeTrackFromPlaylist(playlistid, trackid);
+            return Response.status(Response.Status.OK).entity(trackService.getAllInPlaylist(playlistid)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
+    //Kan deze in trackResource? reden: url werkte niet of functie werd niet aangeroepen
     @Path("/{id}/tracks")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrackToPlaylist(TrackDTO trackDTO, @PathParam("id") int playlistid, @QueryParam("token") String token) {
-        trackService.addTrackToPlaylist(playlistid, trackDTO.getId(), trackDTO.isOfflineAvailable());
-        return Response.status(Response.Status.OK).entity(trackService.getAllInPlaylist(playlistid)).build();
+        if (token != null) {
+            trackService.addTrackToPlaylist(playlistid, trackDTO.getId(), trackDTO.isOfflineAvailable());
+            return Response.status(Response.Status.OK).entity(trackService.getAllInPlaylist(playlistid)).build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 }

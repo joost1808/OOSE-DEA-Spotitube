@@ -2,7 +2,6 @@ package nl.oose.dea.domain.services;
 
 import nl.oose.dea.data.PlaylistDAO;
 import nl.oose.dea.domain.Playlist;
-import nl.oose.dea.domain.exceptions.IdAlreadyInUseException;
 import nl.oose.dea.rest.dto.PlaylistsDTO;
 
 import java.util.List;
@@ -27,8 +26,8 @@ public class PlaylistService {
         playlistDAO.deletePlaylist(id, token);
     }
 
-    public void addPlaylist(String playlistName, boolean isOwner, String token) {
-        playlistDAO.addPlaylist(playlistName, isOwner, token);
+    public void addPlaylist(String playlistName, String token) {
+        playlistDAO.addPlaylist(playlistName, token);
     }
 
     public void editPlaylist(String newName, int id) {

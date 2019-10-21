@@ -33,7 +33,7 @@ public class PlaylistDAO {
         return null;
     }
 
-    public void addPlaylist(String playlistName, boolean isOwner, String token) {
+    public void addPlaylist(String playlistName, String token) {
         try {
             Class.forName(DatabaseProperties.getDatabaseProperty("driver"));
             Connection connection = DriverManager.getConnection(DatabaseProperties.getDatabaseProperty("connectionString"));
