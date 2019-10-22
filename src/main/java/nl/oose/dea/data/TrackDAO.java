@@ -1,6 +1,6 @@
 package nl.oose.dea.data;
 
-import nl.oose.dea.domain.Track;
+import nl.oose.dea.domain.pojo.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

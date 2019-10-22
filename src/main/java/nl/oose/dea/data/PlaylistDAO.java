@@ -1,6 +1,6 @@
 package nl.oose.dea.data;
 
-import nl.oose.dea.domain.Playlist;
+import nl.oose.dea.domain.pojo.Playlist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +41,7 @@ public class PlaylistDAO {
             var userPlaylistsStatement = connection.prepareStatement("INSERT INTO userplaylists VALUES (?, ?, ?)");
             userPlaylistsStatement.setString(1, token);
             userPlaylistsStatement.setString(2, String.valueOf(getPlaylistId(playlistName)));
-            userPlaylistsStatement.setBoolean(3, !checkIfPlaylistExists(playlistName));
+            userPlaylistsStatement.setBoolean(3, checkIfPlaylistExists(playlistName));
             userPlaylistsStatement.executeUpdate();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
@@ -94,7 +94,7 @@ public class PlaylistDAO {
         try (Connection connection = connectionFactory.create()) {
             var statement = connection.prepareStatement("UPDATE playlists SET name = ? WHERE id = ?");
             statement.setString(1, name);
-            statement.setString(1, String.valueOf(playlistid));
+            statement.setString(2, String.valueOf(playlistid));
             statement.executeUpdate();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());

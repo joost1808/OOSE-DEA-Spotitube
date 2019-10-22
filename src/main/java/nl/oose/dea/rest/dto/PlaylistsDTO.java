@@ -1,6 +1,6 @@
 package nl.oose.dea.rest.dto;
 
-import nl.oose.dea.domain.Playlist;
+import nl.oose.dea.domain.pojo.Playlist;
 
 import java.util.ArrayList;
 import java.util.List;

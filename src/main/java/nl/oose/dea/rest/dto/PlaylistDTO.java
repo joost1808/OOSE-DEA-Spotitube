@@ -1,6 +1,6 @@
 package nl.oose.dea.rest.dto;
 
-import nl.oose.dea.domain.Track;
+import nl.oose.dea.domain.pojo.Track;
 
 import java.util.List;
 

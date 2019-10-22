@@ -1,13 +1,19 @@
 package nl.oose.dea.domain.services;
 
 import nl.oose.dea.data.PlaylistDAO;
-import nl.oose.dea.domain.Playlist;
+import nl.oose.dea.domain.pojo.Playlist;
 import nl.oose.dea.rest.dto.PlaylistsDTO;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class PlaylistService {
-    private PlaylistDAO playlistDAO = new PlaylistDAO();
+    private PlaylistDAO playlistDAO;
+
+    @Inject
+    public void setPlaylistDAO(PlaylistDAO playlistDAO) {
+        this.playlistDAO = playlistDAO;
+    }
 
     public PlaylistsDTO getAll(String token) {
         List<Playlist> playlists = playlistDAO.getAllPlaylists(token);

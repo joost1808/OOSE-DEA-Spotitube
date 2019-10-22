@@ -1,6 +1,7 @@
-package nl.oose.dea.domain;
+package nl.oose.dea.domain.pojo;
 
-public class Track extends DomainObject {
+public class Track {
+    private Long id;
     private String title;
     private String performer;
     private int duration;

@@ -1,13 +1,19 @@
 package nl.oose.dea.domain.services;
 
 import nl.oose.dea.data.TrackDAO;
-import nl.oose.dea.domain.Track;
+import nl.oose.dea.domain.pojo.Track;
 import nl.oose.dea.rest.dto.TracksDTO;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class TrackService {
-    private TrackDAO trackDAO = new TrackDAO();
+    private TrackDAO trackDAO;
+
+    @Inject
+    public void setTrackDAO(TrackDAO trackDAO) {
+        this.trackDAO = trackDAO;
+    }
 
     public TracksDTO getAllNotInPlaylist(int playlistid) {
         List<Track> tracks = trackDAO.findAllTracksNotInPlaylist(playlistid);

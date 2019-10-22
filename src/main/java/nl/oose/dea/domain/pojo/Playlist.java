@@ -1,4 +1,4 @@
-package nl.oose.dea.domain;
+package nl.oose.dea.domain.pojo;
 
 import java.util.List;
 

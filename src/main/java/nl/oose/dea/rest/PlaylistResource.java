@@ -1,6 +1,5 @@
 package nl.oose.dea.rest;
 
-import nl.oose.dea.domain.Playlist;
 import nl.oose.dea.domain.services.PlaylistService;
 import nl.oose.dea.domain.services.TrackService;
 import nl.oose.dea.rest.dto.PlaylistDTO;
@@ -60,9 +59,9 @@ public class PlaylistResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response editPlaylist(Playlist playlist, @PathParam("id") int playlistid, @QueryParam("token") String token) {
+    public Response editPlaylist(PlaylistDTO playlistDTO, @PathParam("id") int playlistid, @QueryParam("token") String token) {
         if (token != null) {
-            playlistService.editPlaylist(playlist.getName(), playlistid);
+            playlistService.editPlaylist(playlistDTO.getName(), playlistid);
             return Response.status(Response.Status.OK).entity(playlistService.getAll(token)).build();
         } else {
             return Response.status(Response.Status.BAD_REQUEST).build();

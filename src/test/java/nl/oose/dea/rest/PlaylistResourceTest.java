@@ -1,6 +1,6 @@
 package nl.oose.dea.rest;
 
-import nl.oose.dea.domain.Playlist;
+import nl.oose.dea.domain.pojo.Playlist;
 import nl.oose.dea.domain.services.PlaylistService;
 import nl.oose.dea.domain.services.TrackService;
 import nl.oose.dea.rest.dto.PlaylistDTO;
@@ -78,15 +78,15 @@ private TrackService mockedTrackService;
     @Test
     void verifyEditPlaylist() {
         UUID token = UUID.randomUUID();
-        Playlist playlist = new Playlist(1, "playlist", true, new ArrayList<>(), 0);
-        sut.editPlaylist(playlist, 1, String.valueOf(token));
-        Mockito.verify(mockedPlaylistService).editPlaylist(playlist.getName(), 1);
+        PlaylistDTO playlistDTO = new PlaylistDTO();
+        sut.editPlaylist(playlistDTO, 1, String.valueOf(token));
+        Mockito.verify(mockedPlaylistService).editPlaylist(playlistDTO.getName(), 1);
     }
 
     @Test
     void editPlaylistReturnsBadRequest() {
-        Playlist playlist = new Playlist(1, "playlist", true, new ArrayList<>(), 0);
-        int statusCode = sut.editPlaylist(playlist, 1, null).getStatus();
+        PlaylistDTO playlistDTO = new PlaylistDTO();
+        int statusCode = sut.editPlaylist(playlistDTO, 1, null).getStatus();
         assertEquals(Response.Status.BAD_REQUEST.getStatusCode(), statusCode);
     }
 

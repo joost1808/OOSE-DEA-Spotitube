@@ -9,9 +9,12 @@ import javax.ws.rs.core.Response;
 
 @Path("/tracks")
 public class TrackResource {
+private TrackService trackService;
 
     @Inject
-    TrackService trackService;
+    public void setTrackService(TrackService trackService) {
+        this.trackService = trackService;
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
