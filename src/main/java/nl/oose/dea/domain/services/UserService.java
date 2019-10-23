@@ -25,4 +25,8 @@ public class UserService implements iUserService {
     public boolean userVerify(String user, String password) {
         return userDAO.verifyUser(user, password);
     }
+
+    public boolean checkIfTokenExists(String token) {
+        return userDAO.checkIfTokenExists(token);
+    }
 }

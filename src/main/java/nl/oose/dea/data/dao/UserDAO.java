@@ -65,4 +65,19 @@ public class UserDAO implements iUserDAO {
         }
         return false;
     }
+
+    public boolean checkIfTokenExists(String token) {
+        try (Connection connection = connectionFactory.getConnection();) {
+            var statement = connection.prepareStatement("SELECT token FROM users");
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()) {
+                if (rs.getString(1).equals(token)) {
+                    return true;
+                }
+            }
+        } catch (ClassNotFoundException | SQLException e) {
+            logger.error(e.getMessage());
+        }
+        return false;
+    }
 }

@@ -6,4 +6,5 @@ public interface iUserService {
     TokenDTO getToken(String user);
     void setToken(String user);
     boolean userVerify(String user, String password);
+    boolean checkIfTokenExists(String token);
 }

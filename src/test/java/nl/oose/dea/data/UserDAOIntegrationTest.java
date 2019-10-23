@@ -71,4 +71,14 @@ public class UserDAOIntegrationTest {
     void verifyUserReturnsFalse() {
         assertFalse(userDAO.verifyUser("test", "notthepassword"));
     }
+
+    @Test
+    void verifyCheckIfTokenExistsReturnsTrue() {
+        assertTrue(userDAO.checkIfTokenExists("1234-1234-1234"));
+    }
+
+    @Test
+    void verifyCheckIfTokenExistsReturnsFalse() {
+        assertFalse(userDAO.checkIfTokenExists("1-1-1"));
+    }
 }

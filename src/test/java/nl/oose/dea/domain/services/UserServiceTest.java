@@ -44,4 +44,10 @@ class UserServiceTest {
         sut.userVerify("test", "password");
         Mockito.verify(mockedUserDAO).verifyUser("test", "password");
     }
+
+    @Test
+    void verifyCheckIfTokenExists() {
+        sut.checkIfTokenExists("1234-1234-1234");
+        Mockito.verify(mockedUserDAO).checkIfTokenExists("1234-1234-1234");
+    }
 }
