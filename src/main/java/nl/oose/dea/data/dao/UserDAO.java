@@ -1,7 +1,8 @@
-package nl.oose.dea.data;
+package nl.oose.dea.data.dao;
 
+import nl.oose.dea.data.ConnectionFactory;
 import nl.oose.dea.domain.iUserDAO;
-import nl.oose.dea.rest.dto.TokenDTO;
+import nl.oose.dea.domain.dto.TokenDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

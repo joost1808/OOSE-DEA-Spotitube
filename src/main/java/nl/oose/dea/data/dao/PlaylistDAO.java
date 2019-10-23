@@ -1,5 +1,6 @@
-package nl.oose.dea.data;
+package nl.oose.dea.data.dao;
 
+import nl.oose.dea.data.ConnectionFactory;
 import nl.oose.dea.domain.iPlaylistDAO;
 import nl.oose.dea.domain.pojo.Playlist;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class PlaylistDAO implements iPlaylistDAO {
     public void addPlaylist(String playlistName, String token) {
         try (Connection connection = connectionFactory.getConnection()) {
             if (!checkIfPlaylistExists(playlistName)) {
-                var playlistsStatement = connection.prepareStatement("INSERT INTO playlists VALUES (NULL, ?, NULL)");
+                var playlistsStatement = connection.prepareStatement("INSERT INTO playlists (name) VALUES (?)");
                 playlistsStatement.setString(1, playlistName);
                 playlistsStatement.executeUpdate();
             }
@@ -57,7 +58,8 @@ public class PlaylistDAO implements iPlaylistDAO {
     }
 
     private Long getPlaylistId(String playlistName) {
-        try (Connection connection = connectionFactory.getConnection()) {
+        try {
+            Connection connection = connectionFactory.getConnection();
             var statement = connection.prepareStatement("SELECT id FROM playlists WHERE name = ?");
             statement.setString(1, playlistName);
             ResultSet rs = statement.executeQuery();
@@ -73,7 +75,8 @@ public class PlaylistDAO implements iPlaylistDAO {
     }
 
     private boolean checkIfPlaylistExists(String playlistName) {
-        try (Connection connection = connectionFactory.getConnection()) {
+        try {
+            Connection connection = connectionFactory.getConnection();
             var statement = connection.prepareStatement("SELECT name FROM playlists");
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {

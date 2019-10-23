@@ -1,6 +1,6 @@
 package nl.oose.dea.rest;
 
-import nl.oose.dea.rest.dto.TokenDTO;
+import nl.oose.dea.domain.dto.TokenDTO;
 
 public interface iUserService {
     TokenDTO getToken(String user);

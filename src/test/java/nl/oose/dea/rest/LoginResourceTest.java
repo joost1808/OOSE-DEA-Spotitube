@@ -1,8 +1,8 @@
 package nl.oose.dea.rest;
 
 import nl.oose.dea.domain.services.UserService;
-import nl.oose.dea.rest.dto.TokenDTO;
-import nl.oose.dea.rest.dto.UserDTO;
+import nl.oose.dea.domain.dto.TokenDTO;
+import nl.oose.dea.domain.dto.UserDTO;
 import nl.oose.dea.rest.resources.LoginResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

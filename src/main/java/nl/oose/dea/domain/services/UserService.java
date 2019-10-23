@@ -1,8 +1,7 @@
 package nl.oose.dea.domain.services;
 
-import nl.oose.dea.data.UserDAO;
 import nl.oose.dea.domain.iUserDAO;
-import nl.oose.dea.rest.dto.TokenDTO;
+import nl.oose.dea.domain.dto.TokenDTO;
 import nl.oose.dea.rest.iUserService;
 
 import javax.inject.Inject;
@@ -11,7 +10,7 @@ public class UserService implements iUserService {
     private iUserDAO userDAO;
 
     @Inject
-    public void setUserDAO(UserDAO userDAO) {
+    public void setUserDAO(iUserDAO userDAO) {
         this.userDAO = userDAO;
     }
 

@@ -13,7 +13,7 @@ public class TrackResource {
 private iTrackService trackService;
 
     @Inject
-    public void setTrackService(TrackService trackService) {
+    public void setTrackService(iTrackService trackService) {
         this.trackService = trackService;
     }
 

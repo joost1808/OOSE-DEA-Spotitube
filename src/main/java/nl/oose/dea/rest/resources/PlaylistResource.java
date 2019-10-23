@@ -1,9 +1,7 @@
 package nl.oose.dea.rest.resources;
 
-import nl.oose.dea.domain.services.PlaylistService;
-import nl.oose.dea.domain.services.TrackService;
-import nl.oose.dea.rest.dto.PlaylistDTO;
-import nl.oose.dea.rest.dto.TrackDTO;
+import nl.oose.dea.domain.dto.PlaylistDTO;
+import nl.oose.dea.domain.dto.TrackDTO;
 import nl.oose.dea.rest.iPlaylistService;
 import nl.oose.dea.rest.iTrackService;
 
@@ -18,12 +16,12 @@ public class PlaylistResource {
     private iTrackService trackService;
 
     @Inject
-    public void setPlaylistService(PlaylistService playlistService) {
+    public void setPlaylistService(iPlaylistService playlistService) {
         this.playlistService = playlistService;
     }
 
     @Inject
-    public void setTrackService(TrackService trackService) {
+    public void setTrackService(iTrackService trackService) {
         this.trackService = trackService;
     }
 

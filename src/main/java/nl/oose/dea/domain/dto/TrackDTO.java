@@ -1,4 +1,4 @@
-package nl.oose.dea.rest.dto;
+package nl.oose.dea.domain.dto;
 
 public class TrackDTO {
     private Long id;

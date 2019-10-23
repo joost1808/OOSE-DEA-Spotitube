@@ -1,9 +1,8 @@
 package nl.oose.dea.domain.services;
 
-import nl.oose.dea.data.PlaylistDAO;
 import nl.oose.dea.domain.iPlaylistDAO;
 import nl.oose.dea.domain.pojo.Playlist;
-import nl.oose.dea.rest.dto.PlaylistsDTO;
+import nl.oose.dea.domain.dto.PlaylistsDTO;
 import nl.oose.dea.rest.iPlaylistService;
 
 import javax.inject.Inject;
@@ -13,7 +12,7 @@ public class PlaylistService implements iPlaylistService {
     private iPlaylistDAO playlistDAO;
 
     @Inject
-    public void setPlaylistDAO(PlaylistDAO playlistDAO) {
+    public void setPlaylistDAO(iPlaylistDAO playlistDAO) {
         this.playlistDAO = playlistDAO;
     }
 

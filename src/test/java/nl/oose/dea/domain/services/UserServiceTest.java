@@ -1,7 +1,7 @@
 package nl.oose.dea.domain.services;
 
-import nl.oose.dea.data.UserDAO;
-import nl.oose.dea.rest.dto.TokenDTO;
+import nl.oose.dea.data.dao.UserDAO;
+import nl.oose.dea.domain.dto.TokenDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

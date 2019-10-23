@@ -1,6 +1,6 @@
 package nl.oose.dea.rest;
 
-import nl.oose.dea.rest.dto.PlaylistsDTO;
+import nl.oose.dea.domain.dto.PlaylistsDTO;
 
 public interface iPlaylistService {
     PlaylistsDTO getAll(String token);

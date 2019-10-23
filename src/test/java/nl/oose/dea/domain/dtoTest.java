@@ -1,4 +1,4 @@
-package nl.oose.dea.rest;
+package nl.oose.dea.domain;
 
 import com.openpojo.validation.Validator;
 import com.openpojo.validation.ValidatorBuilder;
@@ -9,7 +9,7 @@ import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.jupiter.api.Test;
 
 class dtoTest {
-    private String packageName = "nl.oose.dea.rest.dto";
+    private String packageName = "nl.oose.dea.domain.dto";
 
     @Test
     void validate() {

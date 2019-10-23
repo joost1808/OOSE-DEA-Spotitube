@@ -1,6 +1,7 @@
 package nl.oose.dea.data;
 
-import nl.oose.dea.rest.dto.TokenDTO;
+import nl.oose.dea.data.dao.UserDAO;
+import nl.oose.dea.domain.dto.TokenDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

@@ -1,5 +1,6 @@
 package nl.oose.dea.data;
 
+import nl.oose.dea.data.dao.PlaylistDAO;
 import nl.oose.dea.domain.pojo.Playlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

@@ -1,6 +1,6 @@
 package nl.oose.dea.rest;
 
-import nl.oose.dea.rest.dto.TracksDTO;
+import nl.oose.dea.domain.dto.TracksDTO;
 
 public interface iTrackService {
     TracksDTO getAllNotInPlaylist(int playlistid);

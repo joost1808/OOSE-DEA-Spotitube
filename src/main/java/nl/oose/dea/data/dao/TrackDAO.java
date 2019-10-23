@@ -1,5 +1,6 @@
-package nl.oose.dea.data;
+package nl.oose.dea.data.dao;
 
+import nl.oose.dea.data.ConnectionFactory;
 import nl.oose.dea.domain.iTrackDAO;
 import nl.oose.dea.domain.pojo.Track;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ public class TrackDAO implements iTrackDAO {
 
     public List<Track> findAllTracksNotInPlaylist(int id) {
         try (Connection connection = connectionFactory.getConnection()) {
-            var statement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT trackid FROM playlisttracks WHERE trackid NOT IN (SELECT trackid FROM playlisttracks WHERE playlistid = ?));");
+            var statement = connection.prepareStatement("SELECT * FROM tracks WHERE id NOT IN (SELECT trackid FROM playlisttracks WHERE playlistid = ?);");
             statement.setString(1, String.valueOf(id));
             ResultSet rs = statement.executeQuery();
             List<Track> tracks = new ArrayList<>();

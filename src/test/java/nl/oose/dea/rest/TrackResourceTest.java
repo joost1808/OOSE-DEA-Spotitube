@@ -1,7 +1,7 @@
 package nl.oose.dea.rest;
 
 import nl.oose.dea.domain.services.TrackService;
-import nl.oose.dea.rest.dto.TracksDTO;
+import nl.oose.dea.domain.dto.TracksDTO;
 import nl.oose.dea.rest.resources.TrackResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

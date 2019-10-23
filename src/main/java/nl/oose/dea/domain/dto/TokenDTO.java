@@ -1,4 +1,4 @@
-package nl.oose.dea.rest.dto;
+package nl.oose.dea.domain.dto;
 
 import java.util.Objects;
 
