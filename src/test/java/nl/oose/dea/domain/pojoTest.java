@@ -8,7 +8,7 @@ import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
 import org.junit.jupiter.api.Test;
 
-class domainObjectTest {
+class pojoTest {
     private String packageName = "nl.oose.dea.domain.pojo";
 
     @Test

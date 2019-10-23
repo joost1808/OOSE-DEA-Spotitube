@@ -1,6 +1,7 @@
 package nl.oose.dea.domain.pojo;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Playlist {
     private int id;
@@ -55,5 +56,22 @@ public class Playlist {
 
     public void setLength(int length) {
         this.length = length;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Playlist playlist = (Playlist) o;
+        return id == playlist.id &&
+                owner == playlist.owner &&
+                length == playlist.length &&
+                Objects.equals(name, playlist.name) &&
+                Objects.equals(tracks, playlist.tracks);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, owner, tracks, length);
     }
 }

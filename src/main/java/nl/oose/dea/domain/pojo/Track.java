@@ -1,5 +1,7 @@
 package nl.oose.dea.domain.pojo;
 
+import java.util.Objects;
+
 public class Track {
     private Long id;
     private String title;
@@ -93,5 +95,26 @@ public class Track {
 
     public void setOfflineAvailable(boolean offlineAvailable) {
         this.offlineAvailable = offlineAvailable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Track track = (Track) o;
+        return duration == track.duration &&
+                playcount == track.playcount &&
+                offlineAvailable == track.offlineAvailable &&
+                Objects.equals(id, track.id) &&
+                Objects.equals(title, track.title) &&
+                Objects.equals(performer, track.performer) &&
+                Objects.equals(album, track.album) &&
+                Objects.equals(publicationDate, track.publicationDate) &&
+                Objects.equals(description, track.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, performer, duration, album, playcount, publicationDate, description, offlineAvailable);
     }
 }

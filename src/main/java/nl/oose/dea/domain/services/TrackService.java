@@ -1,14 +1,16 @@
 package nl.oose.dea.domain.services;
 
 import nl.oose.dea.data.TrackDAO;
+import nl.oose.dea.domain.iTrackDAO;
 import nl.oose.dea.domain.pojo.Track;
 import nl.oose.dea.rest.dto.TracksDTO;
+import nl.oose.dea.rest.iTrackService;
 
 import javax.inject.Inject;
 import java.util.List;
 
-public class TrackService {
-    private TrackDAO trackDAO;
+public class TrackService implements iTrackService {
+    private iTrackDAO trackDAO;
 
     @Inject
     public void setTrackDAO(TrackDAO trackDAO) {

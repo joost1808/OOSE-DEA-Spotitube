@@ -1,21 +1,28 @@
 package nl.oose.dea.data;
 
+import nl.oose.dea.domain.iUserDAO;
 import nl.oose.dea.rest.dto.TokenDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public class UserDAO {
+public class UserDAO implements iUserDAO {
     private static final UUID uuid = UUID.randomUUID();
     final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
+    private ConnectionFactory connectionFactory;
+
+    @Inject
+    public void setConnectionFactory(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 
     public TokenDTO getToken(String user) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("SELECT name, token FROM users WHERE username = ?;");
             statement.setString(1, user);
             ResultSet rs = statement.executeQuery();
@@ -31,18 +38,19 @@ public class UserDAO {
     }
 
     public void setToken(String user) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("UPDATE users SET token = ? WHERE username = ?");
             statement.setString(1, String.valueOf(uuid));
             statement.setString(2, user);
             statement.executeUpdate();
+            connection.commit();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
         }
     }
 
     public boolean verifyUser(String user, String password) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("SELECT password FROM users WHERE username = ?");
             statement.setString(1, user);
             ResultSet rs = statement.executeQuery();

@@ -1,18 +1,17 @@
 package nl.oose.dea.rest;
 
-import nl.oose.dea.domain.pojo.Playlist;
 import nl.oose.dea.domain.services.PlaylistService;
 import nl.oose.dea.domain.services.TrackService;
 import nl.oose.dea.rest.dto.PlaylistDTO;
 import nl.oose.dea.rest.dto.PlaylistsDTO;
 import nl.oose.dea.rest.dto.TrackDTO;
 import nl.oose.dea.rest.dto.TracksDTO;
+import nl.oose.dea.rest.resources.PlaylistResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;

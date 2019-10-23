@@ -3,6 +3,7 @@ package nl.oose.dea.rest;
 import nl.oose.dea.domain.services.UserService;
 import nl.oose.dea.rest.dto.TokenDTO;
 import nl.oose.dea.rest.dto.UserDTO;
+import nl.oose.dea.rest.resources.LoginResource;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,25 +32,13 @@ class LoginResourceTest {
     }
 
     @Test
-    void verifySetToken() {
-        UserDTO userDTO = new UserDTO();
-        sut.login(userDTO);
-        Mockito.verify(mockedUserService).setToken(userDTO.getUser());
-    }
-
-    @Test
-    void verifyGetToken() {
-        UserDTO userDTO = new UserDTO();
-        sut.login(userDTO);
-        Mockito.verify(mockedUserService).getToken(userDTO.getUser());
-    }
-
-    //?????????????????????????
-    @Test
-    void getTokenAsEntity() {
-        UserDTO userDTO = new UserDTO();
-        var itemsToReturn = new TokenDTO();
-        Mockito.when(mockedUserService.getToken(userDTO.getUser())).thenReturn(itemsToReturn);
+    void loginReturnsOk() {
+        UserDTO userDTO = new UserDTO("user", "password");
+        TokenDTO tokenDTO = new TokenDTO("user", "test");
+        Mockito.when(mockedUserService.userVerify(userDTO.getUser(), userDTO.getPassword())).thenReturn(true);
+        Mockito.when(mockedUserService.getToken(userDTO.getUser())).thenReturn(tokenDTO);
+        var input = sut.login(userDTO);
+        assertEquals(input.getEntity(), tokenDTO);
     }
 
     @Test

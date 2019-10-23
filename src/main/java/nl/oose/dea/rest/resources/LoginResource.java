@@ -1,8 +1,9 @@
-package nl.oose.dea.rest;
+package nl.oose.dea.rest.resources;
 
 import nl.oose.dea.domain.services.UserService;
 import nl.oose.dea.rest.dto.TokenDTO;
 import nl.oose.dea.rest.dto.UserDTO;
+import nl.oose.dea.rest.iUserService;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -14,7 +15,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/login")
 public class LoginResource {
-    private UserService userService;
+    private iUserService userService;
 
     @Inject
     public void setUserService(UserService userService) {

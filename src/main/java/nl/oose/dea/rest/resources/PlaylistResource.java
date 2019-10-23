@@ -1,9 +1,11 @@
-package nl.oose.dea.rest;
+package nl.oose.dea.rest.resources;
 
 import nl.oose.dea.domain.services.PlaylistService;
 import nl.oose.dea.domain.services.TrackService;
 import nl.oose.dea.rest.dto.PlaylistDTO;
 import nl.oose.dea.rest.dto.TrackDTO;
+import nl.oose.dea.rest.iPlaylistService;
+import nl.oose.dea.rest.iTrackService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -12,8 +14,8 @@ import javax.ws.rs.core.Response;
 
 @Path("/playlists")
 public class PlaylistResource {
-    private PlaylistService playlistService;
-    private TrackService trackService;
+    private iPlaylistService playlistService;
+    private iTrackService trackService;
 
     @Inject
     public void setPlaylistService(PlaylistService playlistService) {

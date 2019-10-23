@@ -1,21 +1,28 @@
 package nl.oose.dea.data;
 
+import nl.oose.dea.domain.iPlaylistDAO;
 import nl.oose.dea.domain.pojo.Playlist;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistDAO {
+public class PlaylistDAO implements iPlaylistDAO {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
+    private ConnectionFactory connectionFactory;
+
+    @Inject
+    public void setConnectionFactory(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 
     public List<Playlist> getAllPlaylists(String token) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("SELECT id, name, length, owner FROM playlists INNER JOIN userplaylists ON playlists.id = userplaylists.playlistid WHERE userplaylists.usertoken = ?");
             statement.setString(1, token);
             ResultSet rs = statement.executeQuery();
@@ -32,7 +39,7 @@ public class PlaylistDAO {
     }
 
     public void addPlaylist(String playlistName, String token) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             if (!checkIfPlaylistExists(playlistName)) {
                 var playlistsStatement = connection.prepareStatement("INSERT INTO playlists VALUES (NULL, ?, NULL)");
                 playlistsStatement.setString(1, playlistName);
@@ -43,13 +50,14 @@ public class PlaylistDAO {
             userPlaylistsStatement.setString(2, String.valueOf(getPlaylistId(playlistName)));
             userPlaylistsStatement.setBoolean(3, checkIfPlaylistExists(playlistName));
             userPlaylistsStatement.executeUpdate();
+            connection.commit();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
         }
     }
 
     private Long getPlaylistId(String playlistName) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("SELECT id FROM playlists WHERE name = ?");
             statement.setString(1, playlistName);
             ResultSet rs = statement.executeQuery();
@@ -65,7 +73,7 @@ public class PlaylistDAO {
     }
 
     private boolean checkIfPlaylistExists(String playlistName) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("SELECT name FROM playlists");
             ResultSet rs = statement.executeQuery();
             while(rs.next()) {
@@ -80,22 +88,24 @@ public class PlaylistDAO {
     }
 
     public void deletePlaylist(int playlistid, String token) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("DELETE FROM userplaylists WHERE userplaylists.usertoken = ? AND playlistid = ?");
             statement.setString(1, token);
             statement.setString(2, String.valueOf(playlistid));
             statement.executeUpdate();
+            connection.commit();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
         }
     }
 
     public void editPlaylist(String name, int playlistid) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("UPDATE playlists SET name = ? WHERE id = ?");
             statement.setString(1, name);
             statement.setString(2, String.valueOf(playlistid));
             statement.executeUpdate();
+            connection.commit();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
         }

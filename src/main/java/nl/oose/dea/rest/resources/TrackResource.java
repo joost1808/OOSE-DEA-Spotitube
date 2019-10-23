@@ -1,6 +1,7 @@
-package nl.oose.dea.rest;
+package nl.oose.dea.rest.resources;
 
 import nl.oose.dea.domain.services.TrackService;
+import nl.oose.dea.rest.iTrackService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -9,7 +10,7 @@ import javax.ws.rs.core.Response;
 
 @Path("/tracks")
 public class TrackResource {
-private TrackService trackService;
+private iTrackService trackService;
 
     @Inject
     public void setTrackService(TrackService trackService) {

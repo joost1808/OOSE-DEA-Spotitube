@@ -1,21 +1,28 @@
 package nl.oose.dea.data;
 
+import nl.oose.dea.domain.iTrackDAO;
 import nl.oose.dea.domain.pojo.Track;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackDAO {
+public class TrackDAO implements iTrackDAO {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private final ConnectionFactory connectionFactory = new ConnectionFactory();
+    private ConnectionFactory connectionFactory;
+
+    @Inject
+    public void setConnectionFactory(ConnectionFactory connectionFactory) {
+        this.connectionFactory = connectionFactory;
+    }
 
     public List<Track> findAllTracksNotInPlaylist(int id) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT trackid FROM playlisttracks WHERE trackid NOT IN (SELECT trackid FROM playlisttracks WHERE playlistid = ?));");
             statement.setString(1, String.valueOf(id));
             ResultSet rs = statement.executeQuery();
@@ -40,7 +47,7 @@ public class TrackDAO {
     }
 
     public List<Track> findAllTracksInPlaylist(int id) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("SELECT * FROM tracks WHERE id IN (SELECT trackid FROM playlisttracks WHERE playlistid = ?)");
             statement.setString(1, String.valueOf(id));
             ResultSet rs = statement.executeQuery();
@@ -65,18 +72,19 @@ public class TrackDAO {
     }
 
     public void removeTrackFromPlaylist(int playlistid, int trackid) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement = connection.prepareStatement("DELETE FROM playlisttracks WHERE playlistid = ? AND trackid = ?");
             statement.setString(1, String.valueOf(playlistid));
             statement.setString(2, String.valueOf(trackid));
             statement.executeUpdate();
+            connection.commit();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
         }
     }
 
     public void addTrackToPlaylist(int playlistid, Long trackid, boolean offlineAvailable) {
-        try (Connection connection = connectionFactory.create()) {
+        try (Connection connection = connectionFactory.getConnection()) {
             var statement1 = connection.prepareStatement("UPDATE tracks SET offlineAvailable = ? WHERE id = ?");
             statement1.setBoolean(1, offlineAvailable);
             statement1.setString(2, String.valueOf(trackid));
@@ -85,32 +93,9 @@ public class TrackDAO {
             statement2.setString(1, String.valueOf(playlistid));
             statement2.setString(2, String.valueOf(trackid));
             statement2.executeUpdate();
+            connection.commit();
         } catch (ClassNotFoundException | SQLException e) {
             logger.error(e.getMessage());
         }
-    }
-
-    public Track getTrack(Long trackid) {
-        try (Connection connection = connectionFactory.create()) {
-            var statement = connection.prepareStatement("SELECT * FROM tracks WHERE id = ?");
-            statement.setString(1, String.valueOf(trackid));
-            ResultSet rs = statement.executeQuery();
-            Track track = null;
-            while (rs.next()) {
-                track = new Track(rs.getLong(1),
-                        rs.getString(2),
-                        rs.getString(3),
-                        rs.getInt(4),
-                        rs.getString(5),
-                        rs.getInt(6),
-                        rs.getString(7),
-                        rs.getString(8),
-                        rs.getBoolean(9));
-            }
-            return track;
-        } catch (ClassNotFoundException | SQLException e) {
-            logger.error(e.getMessage());
-        }
-        return null;
     }
 }
